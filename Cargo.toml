@@ -1,0 +1,8 @@
+[package]
+authors = ["Poga Po <poga.bahamut@gmail.com>"]
+name = "merkle-generator"
+version = "0.1.0"
+
+[dependencies]
+flat-tree = "1.0.0"
+ring = "0.6.2"
