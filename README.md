@@ -1,4 +1,4 @@
-# Merkle Generator
+# merkle-generator
 
 Rust version of [mafintosh/merkle-tree-stream](https://github.com/mafintosh/merkle-tree-stream). Generate a merkle tree based on incoming data.
 
