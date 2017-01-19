@@ -15,8 +15,8 @@ extern crate merkle_generator;
 
 // define how to hash incoming data
 fn parent(a: &Node, b: &Node) -> Vec<u8> {
-    let mut data = a.data.clone().unwrap();
-    data.append(&mut b.data.clone().unwrap());
+    let ref mut hash = a.hash.clone();
+    hash.extend(b.hash.iter().cloned());
 
     digest::digest(&digest::SHA256, data.as_slice())
         .as_ref()
