@@ -2,6 +2,8 @@
 
 Generator a merkle tree based on incoming data.
 
+This modules is ported from [mafintosh/merkle-tree-stream](https://github.com/mafintosh/merkle-tree-stream).
+
 ## Usage
 
 ```rust
