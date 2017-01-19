@@ -29,9 +29,9 @@ impl Generator {
     }
 
     pub fn next(&mut self, data: Vec<u8>) -> Vec<Node> {
-        self.blocks += 1;
         let mut nodes = vec![];
         let index = 2 * self.blocks;
+        self.blocks += 1;
         let len = data.len();
         let mut leaf = Node {
             index: index,
@@ -81,7 +81,12 @@ mod tests {
     fn it_works() {
         let mut gen = Generator::new(leaf, parent);
         let nodes = gen.next(b"Hello World".to_vec());
-        println!("{:?}", nodes);
+        assert!(nodes[0].index == 0);
+        assert!(nodes[0].parent == 1);
+        let data = nodes[0].data.clone().unwrap();
+        assert!(data == b"Hello World");
+        let hash = digest::digest(&digest::SHA256, b"Hello World").as_ref().to_vec();
+        assert!(nodes[0].hash == hash);
     }
 
     fn parent(a: &Node, b: &Node) -> Vec<u8> {
