@@ -81,12 +81,12 @@ mod tests {
     fn gen1() {
         let mut gen = Generator::new(leaf, parent);
         let nodes = gen.next(b"Hello World".to_vec());
-        assert!(nodes[0].index == 0);
-        assert!(nodes[0].parent == 1);
+        assert_eq!(nodes[0].index, 0);
+        assert_eq!(nodes[0].parent, 1);
         let data = nodes[0].data.clone().unwrap();
-        assert!(data == b"Hello World");
+        assert_eq!(data, b"Hello World");
         let hash = digest::digest(&digest::SHA256, b"Hello World").as_ref().to_vec();
-        assert!(nodes[0].hash == hash);
+        assert_eq!(nodes[0].hash, hash);
     }
 
     #[test]
@@ -94,35 +94,34 @@ mod tests {
         let mut gen = Generator::new(leaf, parent);
         let nodes = gen.next(b"Hello".to_vec());
         let n1 = nodes[0].clone();
-        assert!(nodes[0].index == 0);
-        assert!(nodes[0].parent == 1);
+        assert_eq!(nodes[0].index, 0);
+        assert_eq!(nodes[0].parent, 1);
         let data = nodes[0].data.clone().unwrap();
-        assert!(data == b"Hello");
+        assert_eq!(data, b"Hello");
         let hash = digest::digest(&digest::SHA256, b"Hello").as_ref().to_vec();
-        assert!(nodes[0].hash == hash);
+        assert_eq!(nodes[0].hash, hash);
 
         let nodes = gen.next(b"World".to_vec());
         let n2 = nodes[0].clone();
-        assert!(nodes[0].index == 2);
-        assert!(nodes[0].parent == 1);
+        assert_eq!(nodes[0].index, 2);
+        assert_eq!(nodes[0].parent, 1);
         let data = nodes[0].data.clone().unwrap();
-        assert!(data == b"World");
+        assert_eq!(data, b"World");
         let hash = digest::digest(&digest::SHA256, b"World").as_ref().to_vec();
-        assert!(nodes[0].hash == hash);
+        assert_eq!(nodes[0].hash, hash);
 
-        assert!(nodes[1].index == 1);
-        assert!(nodes[1].parent == 3);
+        assert_eq!(nodes[1].index, 1);
+        assert_eq!(nodes[1].parent, 3);
         assert!(nodes[1].data.is_none());
-        let data = concat(&n1, &n2);
-
-        let hash = digest::digest(&digest::SHA256, data.as_slice()).as_ref().to_vec();
-        assert!(nodes[1].hash == hash);
+        let hash = parent(&n1, &n2);
+        assert_eq!(nodes[1].hash, hash);
     }
 
     fn parent(a: &Node, b: &Node) -> Vec<u8> {
-        let data = concat(a, b);
+        let ref mut hash = a.hash.clone();
+        hash.extend(b.hash.iter().cloned());
 
-        digest::digest(&digest::SHA256, data.as_slice())
+        digest::digest(&digest::SHA256, hash.as_slice())
             .as_ref()
             .to_vec()
     }
@@ -130,13 +129,5 @@ mod tests {
     fn leaf(leaf: &Node, roots: &Vec<Node>) -> Vec<u8> {
         let data = leaf.data.clone().unwrap();
         digest::digest(&digest::SHA256, data.as_slice()).as_ref().to_vec()
-    }
-
-    // concat helper
-    fn concat(a: &Node, b: &Node) -> Vec<u8> {
-        let mut data = a.data.clone().unwrap();
-        data.append(&mut b.data.clone().unwrap());
-
-        data
     }
 }
