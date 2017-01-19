@@ -2,6 +2,10 @@
 authors = ["Poga Po <poga.bahamut@gmail.com>"]
 name = "merkle-generator"
 version = "0.1.0"
+description = "generate a merkle tree based on incoming data"
+repository = "https://github.com/poga/merkle-generator"
+license = "MIT"
+keywords = ["merkle"]
 
 [dependencies]
 flat-tree = "1.0.0"
