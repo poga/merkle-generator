@@ -31,7 +31,7 @@ println!("{:?}", nodes);
 
 ## Tree Structure
 
-See [mafintosh/flat-tree](https://github.com/mafintosh/flat-tree-rs) for more information about how node/parent indexes are calculated.
+See [mafintosh/flat-tree-rs](https://github.com/mafintosh/flat-tree-rs) for more information about how node/parent indexes are calculated.
 
 ## License
 
