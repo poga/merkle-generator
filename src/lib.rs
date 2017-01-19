@@ -78,7 +78,7 @@ mod tests {
     use super::{Generator, Node};
 
     #[test]
-    fn it_works() {
+    fn gen1() {
         let mut gen = Generator::new(leaf, parent);
         let nodes = gen.next(b"Hello World".to_vec());
         assert!(nodes[0].index == 0);
@@ -89,9 +89,38 @@ mod tests {
         assert!(nodes[0].hash == hash);
     }
 
+    #[test]
+    fn gen2() {
+        let mut gen = Generator::new(leaf, parent);
+        let nodes = gen.next(b"Hello".to_vec());
+        let n1 = nodes[0].clone();
+        assert!(nodes[0].index == 0);
+        assert!(nodes[0].parent == 1);
+        let data = nodes[0].data.clone().unwrap();
+        assert!(data == b"Hello");
+        let hash = digest::digest(&digest::SHA256, b"Hello").as_ref().to_vec();
+        assert!(nodes[0].hash == hash);
+
+        let nodes = gen.next(b"World".to_vec());
+        let n2 = nodes[0].clone();
+        assert!(nodes[0].index == 2);
+        assert!(nodes[0].parent == 1);
+        let data = nodes[0].data.clone().unwrap();
+        assert!(data == b"World");
+        let hash = digest::digest(&digest::SHA256, b"World").as_ref().to_vec();
+        assert!(nodes[0].hash == hash);
+
+        assert!(nodes[1].index == 1);
+        assert!(nodes[1].parent == 3);
+        assert!(nodes[1].data.is_none());
+        let data = concat(&n1, &n2);
+
+        let hash = digest::digest(&digest::SHA256, data.as_slice()).as_ref().to_vec();
+        assert!(nodes[1].hash == hash);
+    }
+
     fn parent(a: &Node, b: &Node) -> Vec<u8> {
-        let mut data = a.data.clone().unwrap();
-        data.append(&mut b.data.clone().unwrap());
+        let data = concat(a, b);
 
         digest::digest(&digest::SHA256, data.as_slice())
             .as_ref()
@@ -101,5 +130,13 @@ mod tests {
     fn leaf(leaf: &Node, roots: &Vec<Node>) -> Vec<u8> {
         let data = leaf.data.clone().unwrap();
         digest::digest(&digest::SHA256, data.as_slice()).as_ref().to_vec()
+    }
+
+    // concat helper
+    fn concat(a: &Node, b: &Node) -> Vec<u8> {
+        let mut data = a.data.clone().unwrap();
+        data.append(&mut b.data.clone().unwrap());
+
+        data
     }
 }
