@@ -87,6 +87,7 @@ mod tests {
         assert_eq!(data, b"Hello World");
         let hash = digest::digest(&digest::SHA256, b"Hello World").as_ref().to_vec();
         assert_eq!(nodes[0].hash, hash);
+        assert_eq!(gen.roots.len(), 1)
     }
 
     #[test]
@@ -115,6 +116,18 @@ mod tests {
         assert!(nodes[1].data.is_none());
         let hash = parent(&n1, &n2);
         assert_eq!(nodes[1].hash, hash);
+
+        assert_eq!(gen.roots.len(), 1)
+    }
+
+    #[test]
+    fn multiple_roots() {
+        let mut gen = Generator::new(leaf, parent);
+        gen.next(b"a".to_vec());
+        gen.next(b"b".to_vec());
+        gen.next(b"c".to_vec());
+
+        assert!(gen.roots.len() > 1);
     }
 
     fn parent(a: &Node, b: &Node) -> Vec<u8> {
