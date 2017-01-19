@@ -1,6 +1,7 @@
 # Merkle Generator
 
-Rust version of [mafintosh/merkle-tree-stream](https://github.com/mafintosh/merkle-tree-stream). Generator a merkle tree based on incoming data. Based on
+Rust version of [mafintosh/merkle-tree-stream](https://github.com/mafintosh/merkle-tree-stream). Generator a merkle tree based on incoming data.
+
 ## Usage
 
 ```rust
