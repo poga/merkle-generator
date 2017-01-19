@@ -2,6 +2,12 @@
 
 Rust version of [mafintosh/merkle-tree-stream](https://github.com/mafintosh/merkle-tree-stream). Generate a merkle tree based on incoming data.
 
+![Cargo Version](https://img.shields.io/crates/v/merkle-generator.svg)
+
+```
+merkle-generator = "0.1.2"
+```
+
 ## Usage
 
 ```rust
