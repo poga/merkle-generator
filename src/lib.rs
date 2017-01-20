@@ -46,8 +46,8 @@ impl Generator {
         nodes.push(leaf.clone());
 
         while self.roots.len() > 1 {
-            let ref left = self.roots[self.roots.len() - 2].clone();
-            let ref right = self.roots[self.roots.len() - 1].clone();
+            let left = &self.roots[self.roots.len() - 2].clone();
+            let right = &self.roots[self.roots.len() - 1].clone();
 
             if left.parent != right.parent {
                 break;
