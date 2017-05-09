@@ -5,7 +5,7 @@ Rust version of [mafintosh/merkle-tree-stream](https://github.com/mafintosh/merk
 ![Cargo Version](https://img.shields.io/crates/v/merkle-generator.svg)
 
 ```
-merkle-generator = "0.1.2"
+merkle-generator = "0.2.0"
 ```
 
 ## Usage
